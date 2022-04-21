@@ -24,7 +24,8 @@ public class Main {
         String sd = new String(desxifrat, StandardCharsets.UTF_8);
         System.out.println(sd);
 
-        // k.getPublic() retorna la clau publica generada
-        // k.getPrivate() retorna la clau privada generada
+        System.out.println("*********** PUBLIC KEY / PRIVATE KEY ***********");
+        System.out.println(k.getPublic()); // retorna la informació de la clau publica generada
+        System.out.println(k.getPrivate()); // retorna la informació de la clau privada generada
     }
 }
