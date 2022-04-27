@@ -5,6 +5,7 @@ import java.io.UnsupportedEncodingException;
 import java.nio.charset.StandardCharsets;
 import java.security.KeyPair;
 import java.security.KeyStore;
+import java.security.PublicKey;
 import java.util.Enumeration;
 import java.util.Scanner;
 
@@ -67,6 +68,15 @@ public class Main {
                 }
             } catch (Exception e) {
                 throw new RuntimeException(e);
+            }
+
+        // 1.3
+        System.out.println("######################### 1.3 ##########################");
+            try {
+                PublicKey publicKey13 = Xifrar.getPublicKey("/home/usuario/Escritorio/jordi.cer"); // /home/usuario/ex6.cer /home/usuario/Escritorio/jordi.cer
+                System.out.println(publicKey13);
+            } catch (Exception e) {
+                System.out.println(e.getMessage());
             }
     }
 }
