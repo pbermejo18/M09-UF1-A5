@@ -10,6 +10,7 @@ public class Main {
         Scanner scanner = new Scanner(System.in);
 
         // 1.1
+        System.out.println("######################### 1.1 ##########################");
             System.out.println("Escriu un missatge: ");
             String missatge = scanner.nextLine();
 
@@ -33,16 +34,29 @@ public class Main {
             System.out.println(k.getPrivate()); // retorna la informació de la clau privada generada
 
         // 1.2
+        System.out.println("######################### 1.2 ##########################");
             try {
                 KeyStore keyStore = Xifrar.loadKeyStore("/home/usuario/.keystore","usuario");
-                char[] JavaCharArray = {'u', 's', 'u', 'a', 'r', 'i', 'o'};
+
+                System.out.println("Tipus d'emmagatzematge: " + keyStore.getType());
+
+                System.out.println("Mida del magatzem: " + keyStore.size());
+
+                // alias
                 Enumeration<String> enumeration = keyStore.aliases();
                 while(enumeration.hasMoreElements()) {
                     String alias = enumeration.nextElement();
                     System.out.println("alias name: " + alias);
                 }
-                System.out.println(keyStore.getKey("mykey", JavaCharArray));
 
+                System.out.println(keyStore.getCertificate("jordi"));
+
+
+
+                /*
+                char[] JavaCharArray = {'u', 's', 'u', 'a', 'r', 'i', 'o'};
+                System.out.println(keyStore.getKey("mykey", JavaCharArray));
+                */
             } catch (Exception e) {
                 throw new RuntimeException(e);
             }
