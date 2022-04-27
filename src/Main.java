@@ -1,3 +1,6 @@
+import javax.crypto.SecretKey;
+import java.io.FileInputStream;
+import java.io.FileOutputStream;
 import java.io.UnsupportedEncodingException;
 import java.nio.charset.StandardCharsets;
 import java.security.KeyPair;
@@ -51,12 +54,17 @@ public class Main {
 
                 System.out.println(keyStore.getCertificate("jordi"));
 
-
-
-                /*
                 char[] JavaCharArray = {'u', 's', 'u', 'a', 'r', 'i', 'o'};
-                System.out.println(keyStore.getKey("mykey", JavaCharArray));
-                */
+                System.out.println("Tipus d'algoritme de la clau mykey: " + keyStore.getKey("mykey", JavaCharArray).getAlgorithm());
+
+
+                SecretKey sk = Xifrar.passwordKeyGeneration("pol",256);
+                KeyStore.SecretKeyEntry skEntry = new KeyStore.SecretKeyEntry(sk);
+                KeyStore.ProtectionParameter protectionParameter = new KeyStore.PasswordProtection(JavaCharArray);
+                keyStore.setEntry("polA5", skEntry,protectionParameter);
+                try (FileOutputStream fom = new FileOutputStream("/home/usuario/.keystore")) {
+                    keyStore.store(fom, JavaCharArray);
+                }
             } catch (Exception e) {
                 throw new RuntimeException(e);
             }
