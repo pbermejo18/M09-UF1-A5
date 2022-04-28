@@ -163,4 +163,49 @@ public class Xifrar {
         }
         return isValid;
     }
+
+    public static byte[][] encryptWrappedData(byte[] data /*Dades*/, PublicKey pub /*Clau pública de B*/) {
+        byte[][] encWrappedData = new byte[2][];
+        try {
+            // Generació de clau
+            KeyGenerator kgen = KeyGenerator.getInstance("AES");
+            kgen.init(128);
+            SecretKey sKey = kgen.generateKey();
+            // Dades xifrades
+            Cipher cipher = Cipher.getInstance("AES"); // Algoritme de xifrat simètric
+            cipher.init(Cipher.ENCRYPT_MODE, sKey);
+            byte[] encMsg = cipher.doFinal(data);
+            // Clau xifrada
+            cipher = Cipher.getInstance("RSA/ECB/PKCS1Padding"); // Algoritmes de xifrat asimètric
+            cipher.init(Cipher.WRAP_MODE, pub);
+            byte[] encKey = cipher.wrap(sKey);
+            // Guardem el missatge i la clau xifrats
+            encWrappedData[0] = encMsg;
+            encWrappedData[1] = encKey;
+        } catch (Exception  ex) {
+            System.err.println("Ha succeït un error xifrant: " + ex);
+        }
+        return encWrappedData;
+    }
+
+    public static byte[] decryptWrappedData(byte[][] data /*Dades*/, PrivateKey privateKey /*Clau privada de B*/) {
+        byte[] encMsg = null;
+        try {
+            // Clau xifrada
+
+            Cipher cipher = Cipher.getInstance("RSA/ECB/PKCS1Padding"); // Algoritmes de xifrat asimètric
+            cipher.init(Cipher.UNWRAP_MODE, privateKey);
+            // SecretKey key = new SecretKeySpec(cipher.doFinal(data[1]), "AES"); //
+            SecretKey secretKey = (SecretKey) cipher.unwrap(data[1],"AES",Cipher.SECRET_KEY);
+
+            // Dades xifrades
+            cipher = Cipher.getInstance("AES"); // Algoritme de xifrat simètric
+            cipher.init(Cipher.DECRYPT_MODE, secretKey);
+            encMsg = cipher.update(data[0]);
+
+        } catch (Exception  ex) {
+            System.err.println("Ha succeït un error xifrant: " + ex);
+        }
+        return encMsg;
+    }
 }

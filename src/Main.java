@@ -111,5 +111,23 @@ public class Main {
             } catch (Exception e) {
                 System.out.println(e.getMessage());
             }
+
+        // 2.2
+        System.out.println("######################### 2.2 ##########################");
+            String st22 = "En un sistema de clau embolcallada (wrapped key en anglès), les dades es xifren usant una clau simètrica d’un sol ús, generada a l’atzar. Aquesta clau llavors es xifra usant la clau pública del destinatari del missatge. Finalment, s’envia al destinatari el missatge i la clau xifrades, conjuntament.";
+            KeyPair keyPair22 = Xifrar.randomGenerate(1028);
+            try {
+                byte[][] bew = Xifrar.encryptWrappedData(st22.getBytes(StandardCharsets.UTF_8), keyPair22.getPublic());
+                String s220 = new String(bew[0], StandardCharsets.UTF_8);
+                System.out.println("Missatge xifrat: " + s220);
+                String s221 = new String(bew[1], StandardCharsets.UTF_8);
+                System.out.println("Clau xifrada: " + s221);
+
+                byte[] bdw = Xifrar.decryptWrappedData(bew, keyPair22.getPrivate());
+                String decrypted = new String(bdw,StandardCharsets.UTF_8);
+                System.out.println("Missatge desxifrat: " + decrypted);
+            } catch (Exception e) {
+                System.out.println(e.getMessage());
+            }
     }
 }
