@@ -5,7 +5,9 @@ import javax.crypto.spec.SecretKeySpec;
 import java.io.File;
 import java.io.FileInputStream;
 import java.io.FileNotFoundException;
+import java.io.IOException;
 import java.security.*;
+import java.security.cert.Certificate;
 import java.security.cert.CertificateException;
 import java.security.cert.CertificateFactory;
 import java.security.cert.X509Certificate;
@@ -112,13 +114,25 @@ public class Xifrar {
         return ks;
     }
 
-    public static PublicKey getPublicKey (String fitxer){
+    public static PublicKey getPublicKey(String fitxer) {
         try {
             FileInputStream fileInputStream = new FileInputStream(fitxer);
             CertificateFactory certificateFactory = CertificateFactory.getInstance("X.509");
             X509Certificate cert = (X509Certificate) certificateFactory.generateCertificate(fileInputStream);
             return cert.getPublicKey();
         } catch (FileNotFoundException | CertificateException e) {
+            throw new RuntimeException(e);
+        }
+    }
+
+    public static PublicKey getPublicKey4(KeyStore ks, String alias, String pwMyKey) {
+        try {
+            Key key = ks.getKey(alias, pwMyKey.toCharArray());
+            if (key instanceof PrivateKey) {
+                Certificate cert = ks.getCertificate(alias);
+                return cert.getPublicKey();
+            } else return null;
+        } catch (KeyStoreException | NoSuchAlgorithmException | UnrecoverableKeyException e) {
             throw new RuntimeException(e);
         }
     }

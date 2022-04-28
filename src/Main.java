@@ -5,6 +5,7 @@ import java.io.UnsupportedEncodingException;
 import java.nio.charset.StandardCharsets;
 import java.security.KeyPair;
 import java.security.KeyStore;
+import java.security.KeyStoreException;
 import java.security.PublicKey;
 import java.util.Enumeration;
 import java.util.Scanner;
@@ -58,7 +59,7 @@ public class Main {
                 char[] JavaCharArray = {'u', 's', 'u', 'a', 'r', 'i', 'o'};
                 System.out.println("Tipus d'algoritme de la clau mykey: " + keyStore.getKey("mykey", JavaCharArray).getAlgorithm());
 
-
+                // 1.2.2
                 SecretKey sk = Xifrar.passwordKeyGeneration("pol",256);
                 KeyStore.SecretKeyEntry skEntry = new KeyStore.SecretKeyEntry(sk);
                 KeyStore.ProtectionParameter protectionParameter = new KeyStore.PasswordProtection(JavaCharArray);
@@ -77,6 +78,16 @@ public class Main {
                 System.out.println(publicKey13);
             } catch (Exception e) {
                 System.out.println(e.getMessage());
+            }
+
+        // 1.4
+        System.out.println("######################### 1.4 ##########################");
+            try {
+                KeyStore keyStore = Xifrar.loadKeyStore("/home/usuario/.keystore","usuario");
+                PublicKey publicKey14 = Xifrar.getPublicKey4(keyStore,"mykey","usuario");
+                System.out.println(publicKey14);
+            } catch (Exception e) {
+                throw new RuntimeException(e);
             }
     }
 }
