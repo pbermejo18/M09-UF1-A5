@@ -7,6 +7,7 @@ import java.security.KeyPair;
 import java.security.KeyStore;
 import java.security.KeyStoreException;
 import java.security.PublicKey;
+import java.util.Arrays;
 import java.util.Enumeration;
 import java.util.Scanner;
 
@@ -88,6 +89,27 @@ public class Main {
                 System.out.println(publicKey14);
             } catch (Exception e) {
                 throw new RuntimeException(e);
+            }
+
+        // 1.5
+        System.out.println("######################### 1.5 ##########################");
+            String st15 = "Exercici 1.5 sdvjnsjvknjvnfjvndfkjvjndfkvjdnzvkjnfkjdvkjzdnkjnfvkjn";
+            byte[] signatura = null;
+            try {
+                signatura = Xifrar.signData(st15.getBytes(StandardCharsets.UTF_8),k.getPrivate());
+                String s15 = new String(signatura, StandardCharsets.UTF_8);
+                System.out.println(s15);
+            } catch (Exception e) {
+                System.out.println(e.getMessage());
+            }
+
+        // 1.6
+        System.out.println("######################### 1.6 ##########################");
+            try {
+                boolean b16 = Xifrar.validateSignature(st15.getBytes(),signatura,k.getPublic());
+                System.out.println(b16);
+            } catch (Exception e) {
+                System.out.println(e.getMessage());
             }
     }
 }

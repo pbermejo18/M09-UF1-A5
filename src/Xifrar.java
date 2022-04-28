@@ -136,4 +136,31 @@ public class Xifrar {
             throw new RuntimeException(e);
         }
     }
+
+    public static byte[] signData(byte[] data, PrivateKey priv) {
+        byte[] signature = null;
+
+        try {
+            Signature signer = Signature.getInstance("SHA1withRSA");
+            signer.initSign(priv);
+            signer.update(data);
+            signature = signer.sign();
+        } catch (Exception ex) {
+            System.err.println("Error signant les dades: " + ex);
+        }
+        return signature;
+    }
+
+    public static boolean validateSignature(byte[] data, byte[] signature, PublicKey pub) {
+        boolean isValid = false;
+        try {
+            Signature signer = Signature.getInstance("SHA1withRSA");
+            signer.initVerify(pub);
+            signer.update(data);
+            isValid = signer.verify(signature);
+        } catch (Exception ex) {
+            System.err.println("Error validant les dades: " + ex);
+        }
+        return isValid;
+    }
 }
