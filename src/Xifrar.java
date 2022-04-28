@@ -191,14 +191,13 @@ public class Xifrar {
     public static byte[] decryptWrappedData(byte[][] data /*Dades*/, PrivateKey privateKey /*Clau privada de B*/) {
         byte[] encMsg = null;
         try {
-            // Clau xifrada
-
+            // Clau desxifrada
             Cipher cipher = Cipher.getInstance("RSA/ECB/PKCS1Padding"); // Algoritmes de xifrat asimètric
             cipher.init(Cipher.UNWRAP_MODE, privateKey);
             // SecretKey key = new SecretKeySpec(cipher.doFinal(data[1]), "AES"); //
             SecretKey secretKey = (SecretKey) cipher.unwrap(data[1],"AES",Cipher.SECRET_KEY);
 
-            // Dades xifrades
+            // Dades desxifrades
             cipher = Cipher.getInstance("AES"); // Algoritme de xifrat simètric
             cipher.init(Cipher.DECRYPT_MODE, secretKey);
             encMsg = cipher.update(data[0]);
